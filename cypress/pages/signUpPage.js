@@ -10,7 +10,7 @@ export class signUpPage{
         otpInputs: '.otp-input input',
         closeModal: '.modal-header',
 
-        //Locators of the elements need to be Asserted.
+        //Locators of elements to be Asserted.
         mainClinicsDiv: '.swiper-wrapper',
         clinicAlFurjanName: 'h2.mb-1',
         clinicAlFurjanTime: '.swiper-slide-active > .clinic_selection > .flex flex-col > .clinic_days > .off_day !text-[#635C7A]',
@@ -30,7 +30,8 @@ export class signUpPage{
     }
 
     clsModal(cls){
-        cy.get(this.weblocators.closeModal).click(cls)
+        cy.get(this.weblocators.closeModal).click(cls);
+        cy.wait(2000);
     }
     selectCountry(CSelect) {
         cy.get(this.weblocators.countrySelector).select(CSelect)

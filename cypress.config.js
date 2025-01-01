@@ -4,10 +4,9 @@ module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
       // implement node event listeners here
+      // Remove or replace the invalid event name
     },
-    resolve: {
-      extensions: ['.js', '.json'], // Ensure .json is included here
-    },
+    // resolve property is not valid in Cypress configuration
   },
 
   env: {

@@ -23,3 +23,13 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+
+
+Cypress.Commands.add('login', (phoneNumber, codeOTP, countryInitials) => {
+    cy.get('.login_btn').click()
+    cy.get('.PhoneInputCountrySelect').select(countryInitials)
+    cy.get('.PhoneInputInput').type(phoneNumber)
+    cy.get('.otp-input input').type(codeOTP)
+    cy.get('.text-xl').click()
+})

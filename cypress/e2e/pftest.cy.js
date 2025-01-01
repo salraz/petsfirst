@@ -7,7 +7,20 @@ const appObj = new appointmentPage();
 import data from '../fixtures/data.json';
 
 describe('PetsFirst Ui Test Automation', () => {
-  it('User registeration flow', () => {
+  beforeEach(() => {
+    cy.login(data.phoneNumber, data.codeOTP, data.countryInitials)
+  });
+    it('Registeration (login) flow', () => {
+    signupObj.openURL();
+    signupObj.clsModal();
+    signupObj.loginBtn();
+    signupObj.selectCountry(data.countryInitials)
+    signupObj.enterPhoneNumber(data.phoneNumber);
+    signupObj.clickSubmitBtn();
+  signupObj.enterOtp(data.codeOTP);
+});
+
+  it('Create an Appointment', () => {
     signupObj.openURL();
     signupObj.clsModal();
     signupObj.loginBtn();
@@ -15,16 +28,12 @@ describe('PetsFirst Ui Test Automation', () => {
     signupObj.enterPhoneNumber(data.phoneNumber);
     signupObj.clickSubmitBtn();
     signupObj.enterOtp(data.codeOTP);
-    // signupObj.allAssertion();
-  })
-
-  it('Booking an Appointment', () => {
     appObj.visitHomePage();
-    appObj.clsModal();
+    //appObj.clsModal();
+    appObj.createVaccinationApp();
+    appObj.reserveSlot();
+    appObj.availableSlots();
     //appObj.bookAppointment();
-    
-  })
-
-
-})
+  });
+});
 
