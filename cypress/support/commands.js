@@ -26,10 +26,18 @@
 
 
 
-Cypress.Commands.add('login', (phoneNumber, codeOTP, countryInitials) => {
-    cy.get('.login_btn').click()
-    cy.get('.PhoneInputCountrySelect').select(countryInitials)
-    cy.get('.PhoneInputInput').type(phoneNumber)
-    cy.get('.otp-input input').type(codeOTP)
-    cy.get('.text-xl').click()
+Cypress.Commands.add('login', (countryInitials, phoneNumber, codeOTP) => {
+    cy.visit(Cypress.env('URL'))
+    // cy.window().then((win) => {
+    //     if (!win.google) {
+    //         throw new Error('google is not defined');
+    //     }
+    // });
+    cy.get('.modal-header').click();
+    cy.get('.login_btn').click();
+    cy.get('.PhoneInputCountrySelect').select(countryInitials);
+    cy.get('.PhoneInputInput').type(phoneNumber);
+    cy.wait(2000);
+    cy.get('.text-xl').click();
+    cy.get('.otp-input input').first().type(codeOTP);
 })

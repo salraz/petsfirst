@@ -1,6 +1,5 @@
 export class signUpPage{
 
-
     weblocators= {
         loginBtn: '.login_btn',
         countrySelector: '.PhoneInputCountrySelect',

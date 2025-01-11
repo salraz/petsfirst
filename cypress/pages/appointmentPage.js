@@ -1,6 +1,7 @@
 export class appointmentPage {
 
     weblocators={
+        anotherLoginBtn: ':nth-child(1) > .px-4 > .btn-secondary',
         bookVaccination: '[href="/en/Clinic/vaccination"] > .relative > img',
         closeModal: '.modal-header',
         petSelector: '.select-pets > .flex > :nth-child(3)',
@@ -26,12 +27,16 @@ export class appointmentPage {
     }
 
     clsModal(){
-        return cy.get(this.weblocators.closeModal).click();
+        cy.wait(5000);
+        cy.get(this.weblocators.closeModal).click();
     }
 
+    pressAnotherLoginBtn(){
+        cy.get(this.weblocators.anotherLoginBtn).click();
+    }
     createVaccinationApp() {
         
-        cy.get(this.weblocators.bookappointmentBtn).click();
+        //cy.get(this.weblocators.bookappointmentBtn).click();
         cy.get(this.weblocators.bookVaccination).click();
         cy.wait(2000);
         cy.get(this.weblocators.petSelector).click();
@@ -88,7 +93,7 @@ export class appointmentPage {
                 }
             });
             cy.get('body').then(($body) => {
-                if ($body.find('.time-slot.taken').length > 0) {
+                if ($body.find(this.weblocators.timeslots).length > 0) {
                     cy.log('Time slot already taken, please select another slot.');
                 } else {
                     cy.get(this.weblocators.timeslots).first().click(); // Select time slot
