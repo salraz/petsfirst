@@ -1,102 +1,123 @@
-export class signUpPage{
+export class signUpPage {
 
-
-    weblocators= {
+    weblocators = {
+        // Login & Country Selection
         loginBtn: '.login_btn',
         countrySelector: '.PhoneInputCountrySelect',
         countryIntitials: 'option[value="PK"]',
         phoneNumber: '.PhoneInputInput',
         submitBtn: '.text-xl',
+
+        // OTP Page
         otpInputs: '.otp-input input',
+        otpHeader: 'h1.text-primary-default',
+        phoneNumberOnOtpPage: 'header.head p span',
+        retryMessage: '.login-nav p:nth-child(1)',
+        retryTimer: '.login-nav p:nth-child(2)',
+
+        // Modals & Errors
         closeModal: '.modal-header',
+        errorMsg: '.errorText_error_message__T_gyH.font-medium.pt-4.block',
 
-        //Locators of elements to be Asserted.
-        mainClinicsDiv: '.swiper-wrapper',
-        clinicAlFurjanName: 'h2.mb-1',
-        clinicAlFurjanTime: '.swiper-slide-active > .clinic_selection > .flex flex-col > .clinic_days > .off_day !text-[#635C7A]',
-        clinicAlFurjanImage: '.swiper-slide-active > .clinic_selection > .img_hold',
-        clinicCityWalkCard: '.swiper-slide-next > .clinic_selection',
-        clinicCityWalkImage: '.swiper-slide-next > .clinic_selection > .img_hold',
-        clinicFurjanCard: '.swiper-slide-active > .clinic_selection'
+        // Welcome Screen
+        welcomeHeader: 'h1.text-primary-default',
+        welcomeSubHeader: 'p.text-base.text-primary-default',
+        selectedCountry: '.PhoneInputCountrySelect option:selected',
+        countryFlag: '.PhoneInputCountryIconImg',
+        phoneInput: '#phone-number-input',
+        continueBtn: 'button:contains("Continue")',
 
+        // Appointment Booking
+        bookVaccination: '.book-vaccination-btn' // <-- replace with actual selector
     }
 
-    openURL(){
+    openURL() {
         cy.visit(Cypress.env('URL'))
+        cy.wait(4000)
     }
 
-    loginBtn(LBtn){
-        cy.get(this.weblocators.loginBtn).click(LBtn)
-    }
-
-    clsModal(cls){
-        cy.get(this.weblocators.closeModal).click(cls);
+    clsModal() {
+        cy.get(this.weblocators.closeModal).click();
         cy.wait(2000);
     }
+
+    clickLoginBtn() {
+        cy.get(this.weblocators.loginBtn).click();
+    }
+
+    verifyWelcomeScreen() {
+        cy.get(this.weblocators.welcomeHeader)
+            .should('be.visible')
+            .and('have.text', 'Welcome!');
+
+        cy.get(this.weblocators.welcomeSubHeader)
+            .should('be.visible')
+            .and('contain.text', 'Enter your mobile number to continue');
+
+        cy.get(this.weblocators.selectedCountry)
+            .should('have.value', 'AE');
+
+        cy.get(this.weblocators.countryFlag)
+            .should('be.visible')
+            .and('have.attr', 'alt', 'United Arab Emirates')
+            .and('have.attr', 'src')
+            .and('include', 'AE.svg');
+
+        cy.get(this.weblocators.phoneInput)
+            .should('be.visible')
+            .and('have.value', '+971');
+
+        cy.get(this.weblocators.continueBtn).should('be.disabled');
+    }
+
     selectCountry(CSelect) {
         cy.get(this.weblocators.countrySelector).select(CSelect)
     }
 
-    enterPhoneNumber(PNum){
+    enterPhoneNumber(PNum) {
         cy.get(this.weblocators.phoneNumber).type(PNum)
     }
 
-    clickSubmitBtn(SBtn) {
-        cy.get(this.weblocators.submitBtn).click(SBtn)
+    clickSubmitBtn() {
+        cy.get(this.weblocators.submitBtn).click()
     }
 
-    enterOtp(codeOTP){
+    verifyAllOtpPageElements(expectedPhoneNumber) {
+        cy.get(this.weblocators.otpHeader)
+            .should('be.visible')
+            .and('have.text', 'Verify your number');
 
+        cy.get(this.weblocators.phoneNumberOnOtpPage)
+            .should('be.visible')
+            .and('contain.text', expectedPhoneNumber);
+
+        cy.get(this.weblocators.otpInputs)
+            .should('have.length', 4)
+            .each((input) => {
+                cy.wrap(input)
+                    .should('be.visible')
+                    .and('have.attr', 'type', 'text')
+                    .and('have.attr', 'pattern', '[0-9]*')
+                    .and('have.attr', 'inputmode', 'numeric')
+                    .and('have.value', '');
+            });
+
+        cy.get(this.weblocators.retryMessage)
+            .should('be.visible')
+            .and('contain.text', "Haven’t received an SMS?");
+
+        cy.get(this.weblocators.retryTimer)
+            .should('be.visible')
+            .and('contain.text', 'Retry in');
+    }
+
+    enterOtp(codeOTP) {
         cy.get(this.weblocators.otpInputs).each((input, index) => {
             cy.wrap(input).type(codeOTP[index]);
         });
     }
 
-    bookAppointments(bookApp){
-      cy.get(this.weblocators.bookVaccination).click();
+    bookAppointments() {
+        cy.get(this.weblocators.bookVaccination).click();
     }
-
-    // allAssertion(){
-    //   // cy.get(this.weblocators.clinicAlFurjanName).should('be.visible');
-    //     const expectedData = [
-    //         {
-    //           name: 'PetsFirst, Al Furjan',
-    //           timing: 'Monday - Sunday\n09:00 - 21:00',
-    //           phone: '04 451 9138',
-    //           address: 'Star by Azizi, Al Furjan'
-    //         },
-    //         {
-    //           name: 'PetsFirst, City Walk',
-    //           timing: 'Wednesday - Monday (Tuesday Off)\n09:00 - 20:00',
-    //           phone: '04 575 9646',
-    //           address: 'Building 13B, City Walk'
-    //         }
-    //       ];
-      
-    //       cy.get(this.weblocators.mainClinicsDiv) // Adjust the selector to match your HTML
-    //         .should('have.length', expectedData.length) // Check number of cards
-    //         .each((card, index) => {
-    //           // Validate card content
-    //           cy.wrap(card).within(() => {
-    //             cy.contains(this.weblocators.clinicAlFurjanName) // Selector for clinic name
-    //               .should('contain.text', expectedData[0].name);
-      
-    //             // cy.get(this.weblocators.clinicAlFurjanTime) // Selector for timing
-    //             //   .should('contain.text', expectedData[0].timing);
-      
-    //             cy.get('.clinic-phone') // Selector for phone
-    //               .should('contain.text', expectedData[0].phone);
-      
-    //             cy.get('.clinic-address') // Selector for address
-    //               .should('contain.text', expectedData[0].address);
-    //             });
-    //         });
-
-        // cy.get(this.weblocators.clinicAlFurjanCard).should('be.visible');
-        // cy.get(this.weblocators.clinicAlFurjanImage).should('be.visible');
-        // cy.get(this.weblocators.clinicCityWalkCard).should('be.visible');
-        // cy.get(this.weblocators.clinicCityWalkImage).should('be.visible');
-    // }
-
-    
 }

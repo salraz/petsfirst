@@ -1,9 +1,11 @@
 {
-    "phoneNumber": 3219672000,
+    "phoneNumber": 3094359330,
     "countryInitials": "PK",
     "codeOTP": "5734",
     "name": "PetsFirst, Al Furjan",
     "timing": "Monday - Sunday\n09:00 - 21:00",
     "phone": "04 451 9138",
-    "address": "Star by Azizi, Al Furjan"
+    "address": "Star by Azizi, Al Furjan",
+    "firstNames": ["Joe", "Dave", "Mike", "John", "Chris", "Alex", "Tom", "Ryan", "James", "Nick"],
+  "lastNames": ["Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Clark", "Hall", "Walker"]
 }

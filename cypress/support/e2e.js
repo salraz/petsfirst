@@ -14,7 +14,27 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
+import 'cypress-mochawesome-reporter/register';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// Hide XHR requests from command log
+const app = window.top;
+if (app) {
+  app.console.log = () => {};
+}
+
+// Hide fetch requests from command log
+const originalFetch = window.fetch;
+window.fetch = function() {
+  return originalFetch.apply(this, arguments).then(response => {
+    return response;
+  });
+};
+// You can add more global configuration and behavior that modifies Cypress here.
+// For example, you can add custom commands here.
+
+// Example of adding a custom command:
+// Cypress.Commands.add('login', (email, password) => { ... })
